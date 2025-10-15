@@ -1,0 +1,444 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Background Remover - AI-Powered Image Processing</title>
+
+    <!-- Font Awesome for Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <div class="header-content">
+          <i class="fas fa-scissors"></i>
+          <h1>Advanced Background Remover</h1>
+          <p>Optimized GrabCut Algorithm with Multi-Stage Processing</p>
+        </div>
+      </header>
+
+      <!-- Upload Section -->
+      <div class="upload-card" id="uploadSection">
+        <div class="upload-header">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <h2>Upload Your Image</h2>
+          <p>Drag and drop an image or click to browse</p>
+        </div>
+
+        <div class="file-upload-wrapper">
+          <input type="file" id="fileInput" accept="image/*" />
+          <label for="fileInput" class="file-upload-label">
+            <i class="fas fa-upload"></i>
+            <span>Choose Image or Drag & Drop</span>
+          </label>
+        </div>
+
+        <!-- Image Preview Section -->
+        <div class="image-preview-section" id="imagePreviewSection" style="display: none">
+          <div class="preview-header">
+            <i class="fas fa-image"></i>
+            <h3>Image Preview</h3>
+            <button class="change-image-btn" id="changeImageBtn">
+              <i class="fas fa-sync-alt"></i>
+              Change Image
+            </button>
+          </div>
+          <div class="preview-container">
+            <div class="preview-image-wrapper">
+              <img id="previewImage" src="" alt="Preview" />
+              <div class="image-info">
+                <div class="info-item">
+                  <span class="info-label">File:</span>
+                  <span class="info-value" id="fileName">-</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">Size:</span>
+                  <span class="info-value" id="fileSize">-</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">Dimensions:</span>
+                  <span class="info-value" id="imageDimensions">-</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Method Selection -->
+        <div class="method-selection">
+          <h3>Advanced GrabCut Processing</h3>
+          <div class="method-options">
+            <label class="method-option">
+              <input type="radio" name="method" value="grabcut" checked />
+              <div class="method-card">
+                <i class="fas fa-scissors"></i>
+                <h4>Advanced GrabCut</h4>
+                <p>Optimized computer vision with multi-stage processing</p>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <button class="process-btn" id="processBtn" disabled>
+          <i class="fas fa-magic"></i>
+          Remove Background
+        </button>
+      </div>
+
+      <!-- Method Info Card -->
+      <div class="method-info" id="methodInfo">
+        <div class="info-card">
+          <i class="fas fa-info-circle"></i>
+          <h3>Advanced GrabCut Technology</h3>
+          <div class="features-list">
+            <div class="feature-item">
+              <i class="fas fa-check"></i>
+              <span>Multi-stage segmentation algorithm</span>
+            </div>
+            <div class="feature-item">
+              <i class="fas fa-check"></i>
+              <span>Edge-based initial detection</span>
+            </div>
+            <div class="feature-item">
+              <i class="fas fa-check"></i>
+              <span>Morphological refinement</span>
+            </div>
+            <div class="feature-item">
+              <i class="fas fa-check"></i>
+              <span>Smooth anti-aliased edges</span>
+            </div>
+            <div class="feature-item">
+              <i class="fas fa-check"></i>
+              <span>Noise reduction & hole filling</span>
+            </div>
+            <div class="feature-item">
+              <i class="fas fa-check"></i>
+              <span>High-quality PNG transparency</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Loading Section -->
+      <div class="loading-card" id="loadingSection" style="display: none">
+        <div class="loading-spinner">
+          <div class="spinner"></div>
+        </div>
+        <h3>Processing Image...</h3>
+        <p>AI is analyzing and removing the background</p>
+
+        <div class="progress-steps">
+          <div class="step active">
+            <i class="fas fa-upload"></i>
+            <span>Upload</span>
+          </div>
+          <div class="step active">
+            <i class="fas fa-brain"></i>
+            <span>AI Analysis</span>
+          </div>
+          <div class="step">
+            <i class="fas fa-magic"></i>
+            <span>Processing</span>
+          </div>
+          <div class="step">
+            <i class="fas fa-download"></i>
+            <span>Download</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Section -->
+      <div class="results-card" id="resultsSection" style="display: none">
+        <div class="results-header">
+          <i class="fas fa-check-circle"></i>
+          <h2>Background Removed Successfully!</h2>
+          <p>Your image is ready for download</p>
+        </div>
+
+        <div class="image-comparison">
+          <div class="image-container">
+            <div class="image-wrapper">
+              <img id="originalImage" src="" alt="Original Image" />
+              <div class="image-label">Original</div>
+            </div>
+          </div>
+
+          <div class="arrow-separator">
+            <i class="fas fa-arrow-right"></i>
+          </div>
+
+          <div class="image-container">
+            <div class="image-wrapper">
+              <img id="processedImage" src="" alt="Processed Image" />
+              <div class="image-label">Background Removed</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="download-section">
+          <a href="#" class="download-btn" id="downloadBtn">
+            <i class="fas fa-download"></i>
+            Download PNG
+          </a>
+          <button class="new-image-btn" id="newImageBtn">
+            <i class="fas fa-plus"></i>
+            Process New Image
+          </button>
+        </div>
+      </div>
+
+      <!-- Error Section -->
+      <div class="error-card" id="errorSection" style="display: none">
+        <i class="fas fa-exclamation-triangle"></i>
+        <h3>Processing Failed</h3>
+        <p id="errorMessage">Something went wrong while processing your image.</p>
+        <button class="retry-btn" id="retryBtn">
+          <i class="fas fa-redo"></i>
+          Try Again
+        </button>
+      </div>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <p>&copy; 2024 AI Background Remover</p>
+        <p>Digital Image Processing Project</p>
+      </footer>
+    </div>
+
+    <script>
+      // DOM Elements
+      const fileInput = document.getElementById("fileInput");
+      const processBtn = document.getElementById("processBtn");
+      const uploadSection = document.getElementById("uploadSection");
+      const loadingSection = document.getElementById("loadingSection");
+      const resultsSection = document.getElementById("resultsSection");
+      const errorSection = document.getElementById("errorSection");
+      const methodInfo = document.getElementById("methodInfo");
+      const originalImage = document.getElementById("originalImage");
+      const processedImage = document.getElementById("processedImage");
+      const downloadBtn = document.getElementById("downloadBtn");
+      const newImageBtn = document.getElementById("newImageBtn");
+      const retryBtn = document.getElementById("retryBtn");
+      const errorMessage = document.getElementById("errorMessage");
+
+      // Preview elements
+      const imagePreviewSection = document.getElementById("imagePreviewSection");
+      const previewImage = document.getElementById("previewImage");
+      const changeImageBtn = document.getElementById("changeImageBtn");
+      const fileName = document.getElementById("fileName");
+      const fileSize = document.getElementById("fileSize");
+      const imageDimensions = document.getElementById("imageDimensions");
+
+      let selectedFile = null;
+      let processedImageUrl = null;
+
+      // Utility function to format file size
+      function formatFileSize(bytes) {
+        if (bytes === 0) return "0 Bytes";
+        const k = 1024;
+        const sizes = ["Bytes", "KB", "MB", "GB"];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+      }
+
+      // File input handling with preview
+      fileInput.addEventListener("change", function (e) {
+        const file = e.target.files[0];
+        if (file) {
+          selectedFile = file;
+          processBtn.disabled = false;
+
+          // Update file info
+          fileName.textContent = file.name;
+          fileSize.textContent = formatFileSize(file.size);
+
+          // Show preview
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            previewImage.src = e.target.result;
+            originalImage.src = e.target.result;
+
+            // Get image dimensions
+            const img = new Image();
+            img.onload = function () {
+              imageDimensions.textContent = `${this.width} × ${this.height}px`;
+            };
+            img.src = e.target.result;
+
+            // Show preview section
+            imagePreviewSection.style.display = "block";
+
+            // Scroll to preview
+            imagePreviewSection.scrollIntoView({ behavior: "smooth", block: "center" });
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      // Change image button
+      changeImageBtn.addEventListener("click", function () {
+        fileInput.click();
+      });
+
+      // Drag and drop functionality
+      const fileUploadLabel = document.querySelector(".file-upload-label");
+
+      fileUploadLabel.addEventListener("dragover", function (e) {
+        e.preventDefault();
+        fileUploadLabel.style.borderColor = "#5a6fd8";
+        fileUploadLabel.style.background = "#f0f2ff";
+      });
+
+      fileUploadLabel.addEventListener("dragleave", function (e) {
+        e.preventDefault();
+        fileUploadLabel.style.borderColor = "#667eea";
+        fileUploadLabel.style.background = "#f8f9ff";
+      });
+
+      fileUploadLabel.addEventListener("drop", function (e) {
+        e.preventDefault();
+        fileUploadLabel.style.borderColor = "#667eea";
+        fileUploadLabel.style.background = "#f8f9ff";
+
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+          fileInput.files = files;
+          fileInput.dispatchEvent(new Event("change"));
+        }
+      });
+
+      // Process button handling
+      processBtn.addEventListener("click", function () {
+        if (!selectedFile) return;
+
+        const formData = new FormData();
+        formData.append("file", selectedFile);
+
+        const selectedMethod = document.querySelector('input[name="method"]:checked').value;
+        formData.append("method", selectedMethod);
+
+        // Show loading state
+        showLoading();
+
+        fetch("/remove_background", {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              processedImageUrl = data.processed_image_url;
+              showResults(data.original_image_url, data.processed_image_url);
+            } else {
+              showError(data.error || "Processing failed");
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            showError("Network error occurred");
+          });
+      });
+
+      // Download button handling
+      downloadBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        if (processedImageUrl) {
+          window.location.href = processedImageUrl;
+        }
+      });
+
+      // New image button handling
+      newImageBtn.addEventListener("click", function () {
+        resetApp();
+      });
+
+      // Retry button handling
+      retryBtn.addEventListener("click", function () {
+        hideError();
+        showUpload();
+      });
+
+      // UI State Management
+      function showLoading() {
+        uploadSection.style.display = "none";
+        methodInfo.style.display = "none";
+        resultsSection.style.display = "none";
+        errorSection.style.display = "none";
+        loadingSection.style.display = "block";
+
+        // Animate progress steps
+        const steps = document.querySelectorAll(".step");
+        steps[2].classList.add("active"); // Processing step
+        setTimeout(() => {
+          steps[3].classList.add("active"); // Download step
+        }, 2000);
+      }
+
+      function showResults(originalUrl, processedUrl) {
+        loadingSection.style.display = "none";
+        errorSection.style.display = "none";
+        originalImage.src = originalUrl;
+        processedImage.src = processedUrl;
+        resultsSection.style.display = "block";
+      }
+
+      function showError(message) {
+        loadingSection.style.display = "none";
+        resultsSection.style.display = "none";
+        errorMessage.textContent = message;
+        errorSection.style.display = "block";
+      }
+
+      function hideError() {
+        errorSection.style.display = "none";
+      }
+
+      function showUpload() {
+        loadingSection.style.display = "none";
+        resultsSection.style.display = "none";
+        errorSection.style.display = "none";
+        uploadSection.style.display = "block";
+        methodInfo.style.display = "block";
+
+        // Keep preview visible if there's a selected file
+        if (selectedFile && previewImage.src) {
+          imagePreviewSection.style.display = "block";
+        }
+      }
+
+      function resetApp() {
+        selectedFile = null;
+        processedImageUrl = null;
+        processBtn.disabled = true;
+        fileInput.value = "";
+
+        // Hide preview section
+        imagePreviewSection.style.display = "none";
+
+        // Reset file info
+        fileName.textContent = "-";
+        fileSize.textContent = "-";
+        imageDimensions.textContent = "-";
+        previewImage.src = "";
+
+        // Reset progress steps
+        const steps = document.querySelectorAll(".step");
+        steps.forEach((step, index) => {
+          if (index < 2) {
+            step.classList.add("active");
+          } else {
+            step.classList.remove("active");
+          }
+        });
+
+        showUpload();
+      }
+
+      // Method selection handling removed since we only have one method now
+      // Advanced GrabCut will always be used for optimal background removal
+    </script>
+  </body>
+</html>

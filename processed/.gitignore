@@ -1,0 +1,4 @@
+# Folder ini digunakan untuk menyimpan hasil gambar yang sudah diproses
+# File akan tersedia untuk di-download
+*
+!.gitignore
