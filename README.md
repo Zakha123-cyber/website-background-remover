@@ -257,11 +257,13 @@ Advanced GrabCut menghasilkan background removal dengan kualitas yang baik:
 ## 📸 **Screenshots**
 
 ### Main Interface
+
 - Modern responsive design dengan image preview
 - File information panel dengan ukuran dan format
 - One-click background removal processing
 
 ### Processing Results
+
 - Clean background removal dengan transparansi
 - Preserved object details dan edges
 - Professional PNG output ready untuk download
