@@ -21,8 +21,8 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 
 # Configuration
-app.config['UPLOAD_FOLDER'] = '/tmp/uploads'
-app.config['PROCESSED_FOLDER'] = '/tmp/processed'
+app.config['UPLOAD_FOLDER'] = 'uploads'
+app.config['PROCESSED_FOLDER'] = 'processed'
 app.config['MODEL_FOLDER'] = 'models'
 app.config['MAX_CONTENT_LENGTH'] = 32 * 1024 * 1024  # 32MB max file size
 
@@ -542,4 +542,4 @@ if __name__ == '__main__':
         logger.error(f"Failed to load model: {e}")
         logger.info("Will use fallback method instead")
     
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=False, host='0.0.0.0', port=5000)
