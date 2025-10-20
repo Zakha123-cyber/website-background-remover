@@ -271,7 +271,7 @@ def advanced_grabcut_remover(image_path):
         
         # Strategy 1: Traditional GrabCut with conservative rectangle
         mask1 = np.zeros((height, width), np.uint8)
-        margin = 0.15  # More conservative margin
+        margin = 0.015  # More conservative margin
         x1 = int(width * margin)
         y1 = int(height * margin)
         x2 = int(width * (1 - margin))
