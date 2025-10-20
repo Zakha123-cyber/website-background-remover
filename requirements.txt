@@ -3,7 +3,7 @@ Werkzeug==3.0.1
 torch==2.7.1+cpu
 torchvision==0.22.1+cpu
 --extra-index-url https://download.pytorch.org/whl/cpu
-opencv-python==4.8.1.78
+opencv-python-headless==4.8.1.78
 numpy==1.26.4
 Pillow==10.0.1
 gunicorn==21.2.0
